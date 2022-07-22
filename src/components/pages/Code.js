@@ -1,10 +1,13 @@
 import "./Code.css";
 import { useParams } from "react-router-dom";
 import { faHtml5, faCss3, faJs } from "@fortawesome/free-brands-svg-icons";
-
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import EditorCode from "../utils/EditorCode";
 import { useSearchFile } from "../../hooks/useFetch";
 import { LIST_COMPONENTS } from "../../data/components";
+import { useState, useEffect } from 'react';
+
+import MobileCodeTab from '../utils/MobileCodeTab'
 
 document.addEventListener('keydown', e => {
   if(e.ctrlKey && e.key === 's') {
@@ -17,6 +20,19 @@ const Code = () => {
     const { code } = useParams()
     const { tags } = LIST_COMPONENTS.filter(({ path }) => path === code)[0]
     const { html, css, js, preview } = useSearchFile(`/components/${component.toLocaleLowerCase()}/${code}`, tags)
+    const [isMobile, setIsMobile] = useState(false)
+    const [currentEditor, setCurrentEditor] = useState('html')
+
+   // Media query, for responsive code editor
+   useEffect(() => {
+      const mediaQuery = window.matchMedia('(max-width: 992px)');
+
+      mediaQuery.matches ? setIsMobile(true) : setIsMobile(false);
+
+      mediaQuery.addEventListener('change', () => {
+        mediaQuery.matches ? setIsMobile(true) : setIsMobile(false);
+      })
+   },[])
 
     const getStyle = (element, prop) => window.getComputedStyle(element)[prop]
 
@@ -53,11 +69,53 @@ const Code = () => {
     return (
         <div className="code">
             <div className="code__editor">
-                <EditorCode content={html?.contentHTML} setContent={html?.setContentHTML} icon={faHtml5} lang="HTML" />
+            {
+              isMobile ? (
+                <>
+                <MobileCodeTab 
+                  currentEditor={currentEditor}
+                  setCurrentEditor={setCurrentEditor} 
+                  faHtml={faHtml5} 
+                  faCss={faCss3}
+                  faJs={faJs}
+                  faCopy={faCopy}
+                />
+                {currentEditor === 'html' && (
+                  <EditorCode 
+                    content={html?.contentHTML} 
+                    setContent={html?.setContentHTML} 
+                    icon={faHtml5} 
+                    lang="HTML" 
+                    isMobile={isMobile}/>
+                )}
+                {currentEditor === 'css' && (
+                  <EditorCode 
+                    content={css?.contentCSS} 
+                    setContent={css?.setContentCSS} 
+                    icon={faCss3} 
+                    lang="CSS" 
+                    isMobile={isMobile}/>
+                )}
+                {currentEditor === 'js' && (
+                  <EditorCode 
+                    content={js?.contentJS} 
+                    setContent={js?.setContentJS} 
+                    icon={faJs} 
+                    lang="JavaScript" 
+                    isMobile={isMobile}/>
+                )}
+                </>
+              ) : (
+                <>
+                <EditorCode content={html?.contentHTML} setContent={html?.setContentHTML} icon={faHtml5} lang="HTML" isMobile={isMobile}/>
                 <div className="code__resizerH" onMouseDown={(e) => handlerResizer('height', e)}></div>
-                <EditorCode content={css?.contentCSS} setContent={css?.setContentCSS} icon={faCss3} lang="CSS" />
+                <EditorCode content={css?.contentCSS} setContent={css?.setContentCSS} icon={faCss3} lang="CSS" isMobile={isMobile}/>
                 <div className="code__resizerH" onMouseDown={(e) => handlerResizer('height', e)}></div>
-                <EditorCode content={js?.contentJS} setContent={js?.setContentJS} icon={faJs} lang="JavaScript" />
+                <EditorCode content={js?.contentJS} setContent={js?.setContentJS} icon={faJs} lang="JavaScript" isMobile={isMobile}/>
+                </>
+              )
+            }
+                
             </div>
             <div className="code__resizerV" onMouseDown={(e) => handlerResizer('width', e)}></div>
             <iframe className="code__preview" title={code} src={`data:text/html;base64,${preview}`} />

@@ -48,3 +48,34 @@
   transform: scaleY(8);
   background-color: #b8b8b8;
 }
+
+@media screen and (max-width: 992px) {
+   body {
+      height: auto;
+   }
+   .app {
+      overflow: visible;
+   }
+
+  .code__resizerV,
+  .code__resizerH {
+     display: none;
+  }
+
+  .code {
+     flex-direction: column;
+     align-items: center;
+  }
+
+   .code__editor {
+      width: 90%;
+      height: 50%;
+      gap:0.6rem;
+      background-color: #1e1e1e;
+   }
+
+  .code__preview {
+     height: 50%;
+  }
+
+}
