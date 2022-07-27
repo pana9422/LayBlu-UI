@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './MobileCodeTab.css';
 
-export default function MobileCodeTab ({currentEditor, setCurrentEditor, faHtml, faCss, faJs, faCopy}) {
+export default function MobileCodeTab ({currentEditor, setCurrentEditor, handleClick, faHtml, faCss, faJs, faCopy}) {
 
   const activeTab = (ev) => currentEditor === ev ? 'tab__btn tab__btn--active' : 'tab__btn'
 
@@ -21,9 +21,8 @@ export default function MobileCodeTab ({currentEditor, setCurrentEditor, faHtml,
             JavaScript
           </button>
         </div>
-        <button className='tab__copy'>
+        <button className='tab__copy' onClick={handleClick}>
           <FontAwesomeIcon icon={faCopy} />
-          Copy
         </button>
       </div>
 

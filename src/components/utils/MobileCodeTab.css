@@ -35,6 +35,26 @@
   background-color: #1e1e1e;
 }
 
+.tab__copy {
+  border: none;
+  padding: 0.6rem 1.2rem;
+  background-color: inherit;
+  color: #ddd;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  display: flex;
+  gap: 0.6rem;
+  margin-right: 1.2rem;
+}
+
+.tab__copy:active {
+  background-color: #1e1e1e;
+}
+
+.tab__copy:focus {
+  outline: none;
+}
+
 .tab__i-html {
   color: #da5c22;
 }

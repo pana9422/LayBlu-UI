@@ -1,13 +1,18 @@
-import "./Code.css";
 import { useParams } from "react-router-dom";
-import { faHtml5, faCss3, faJs } from "@fortawesome/free-brands-svg-icons";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
-import EditorCode from "../utils/EditorCode";
 import { useSearchFile } from "../../hooks/useFetch";
-import { LIST_COMPONENTS } from "../../data/components";
 import { useState, useEffect } from 'react';
 
+import { copyToClipboard } from '../helpers/copyToClipboard'
+
+import { LIST_COMPONENTS } from "../../data/components";
+
 import MobileCodeTab from '../utils/MobileCodeTab'
+import EditorCode from "../utils/EditorCode";
+
+import { faHtml5, faCss3, faJs } from "@fortawesome/free-brands-svg-icons";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
+
+import "./Code.css";
 
 document.addEventListener('keydown', e => {
   if(e.ctrlKey && e.key === 's') {
@@ -66,6 +71,29 @@ const Code = () => {
 
         }, { signal })
     }
+
+  // Handling the click on copy button
+  const handleClick = () => {
+   switch (currentEditor) {
+      case 'html':
+        copyToClipboard(html.contentHTML)
+        break;
+
+      case 'css':
+        copyToClipboard(css.contentCSS)
+        
+        break;
+
+      case 'js':
+        copyToClipboard(js.contentJS)
+        
+        break;
+      default:
+       alert('Copied to clipboard')
+        break;
+    }
+  }
+
     return (
         <div className="code">
             <div className="code__editor">
@@ -79,6 +107,7 @@ const Code = () => {
                   faCss={faCss3}
                   faJs={faJs}
                   faCopy={faCopy}
+                  handleClick={handleClick}
                 />
                 {currentEditor === 'html' && (
                   <EditorCode 

@@ -4,18 +4,23 @@ import { faCopy } from "@fortawesome/free-solid-svg-icons";
 
 import Editor from "@monaco-editor/react";
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { copyToClipboard } from '../helpers/copyToClipboard'
 
 const EditorCode = ({ icon, lang, setContent, content, isMobile }) => {
     
   const [ isCopied, setIsCopied ] = useState(false);
 
-   const editorOptions = { minimap: { enabled: false } }
+   const editorOptions = {
+     minimap: { enabled: false } 
+   }
 
+  // if is on mobile screen
    if (isMobile) editorOptions.lineNumbers = 'off'
 
+  // Copy code to clipboard
   const handlerCopyCode = (codeToCopy) => {
-    navigator.clipboard.writeText(codeToCopy)
+    copyToClipboard(codeToCopy)
       .then(() => {
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000);
