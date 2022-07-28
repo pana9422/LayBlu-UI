@@ -61,3 +61,9 @@
   display: flex;
   align-items: center;
 }
+
+@media screen and (max-width: 992px) {
+  .editor-code {
+    height: 100%;
+  }
+}

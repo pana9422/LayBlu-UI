@@ -13,7 +13,6 @@ const Sidebar = () => {
     const [search, setSearch] = useState("")
     const handlerSearching = ({ target }) => setSearch(target.value)
     
-    console.log('render')
     useEffect(() => {
         
         const searchList = document.querySelectorAll(".item");
